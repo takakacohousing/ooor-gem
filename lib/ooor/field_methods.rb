@@ -143,7 +143,7 @@ module Ooor
     def set_attribute(meth, *args)
       value = sanitize_attribute(meth, args[0])
       @attributes[meth] ||= nil
-      send("#{meth}_will_change!") unless @attributes[meth] == value
+      # send("#{meth}_will_change!") unless @attributes[meth] == value
       @attributes[meth] = value
     end
 
@@ -174,9 +174,9 @@ module Ooor
           return value
         end
       end
-      @skip = true
-      send("#{meth}_will_change!")
-      @skip = false
+      # @skip = true
+      # send("#{meth}_will_change!")
+      # @skip = false
       if value.is_a?(Ooor::Base) || value.is_a?(Array) && !value.empty? && value.all? {|i| i.is_a?(Ooor::Base)}
         @loaded_associations[meth] = value
       else
@@ -185,17 +185,17 @@ module Ooor
       @associations[meth] = value
     end
 
-#    # Raise NoMethodError if the named attribute does not exist in order to preserve behavior expected by #clone.
-#    def attribute(name)
-#      key = name.to_s
-#      if self.class.fields.has_key?(key) #TODO check not symbols
-#        get_attribute(key)
-#      elsif self.class.associations_keys.index(key)
-#        get_association(key)
-#      else
-#        raise NoMethodError
-#      end
-#    end
+   # Raise NoMethodError if the named attribute does not exist in order to preserve behavior expected by #clone.
+   def attribute(name)
+     key = name.to_s
+     if self.class.fields.has_key?(key) #TODO check not symbols
+       get_attribute(key)
+     elsif self.class.associations_keys.index(key)
+       get_association(key)
+     else
+       raise NoMethodError
+     end
+   end
 
     def method_missing(method_symbol, *arguments)
       self.class.reload_fields_definition(false)

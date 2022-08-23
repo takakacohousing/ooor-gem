@@ -114,7 +114,7 @@ module Ooor
         args[i] = @session.session_context(c)
       elsif args[-1].is_a? Hash #context
         if args[-1][:context]
-          c = HashWithIndifferentAccess.new(args[-1][:context])
+          c = HashWithIndifferentAccess.new(args[-1][:context].to_enum.to_h)
           args[-1][:context] = @session.session_context(c)
         else
           c = HashWithIndifferentAccess.new(args[-1])
