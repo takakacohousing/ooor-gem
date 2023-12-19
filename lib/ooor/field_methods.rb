@@ -10,7 +10,7 @@ module Ooor
         if force || !fields
           @t.fields = {}
           @columns_hash = {}
-          if session.odoo_serie < 10
+          if session.odoo_serie.is_a?(Numeric) && session.odoo_serie < 10
             fields_get = rpc_execute("fields_get", false, context)
           else
             fields_get = rpc_execute("fields_get", false)
